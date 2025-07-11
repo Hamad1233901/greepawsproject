@@ -44,3 +44,40 @@ def manage_clients():
 if __name__ == '__main__':
     app.run(debug=True)
 
+class Pet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    species = db.Column(db.String(30), nullable=False)
+    breed = db.Column(db.String(50))
+    dob = db.Column(db.String(20))
+    owner_id = db.Column(db.Integer, db.ForeignKey('client.id'), nullable=False)
+
+    owner = db.relationship('Client', backref=db.backref('pets', lazy=True))
+    @app.route('/api/pets', methods=['POST', 'GET'])
+def manage_pets():
+    if request.method == 'POST':
+        data = request.json
+        pet = Pet(
+            name=data['name'],
+            species=data['species'],
+            breed=data.get('breed', ''),
+            dob=data.get('dob', ''),
+            owner_id=data['owner_id']
+        )
+        db.session.add(pet)
+        db.session.commit()
+        return jsonify({'message': 'Pet added'}), 201
+
+    pets = Pet.query.all()
+    return jsonify([
+        {
+            'id': p.id,
+            'name': p.name,
+            'species': p.species,
+            'breed': p.breed,
+            'dob': p.dob,
+            'owner_id': p.owner_id
+        }
+        for p in pets
+    ])
+
