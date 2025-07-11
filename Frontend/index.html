@@ -1,33 +1,105 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>GreenPaws Clinic – Clients</title>
+    <title>GreenPaws Clinic – Clients & Pets</title>
 </head>
 <body>
-    <h1>Register New Client</h1>
+    <h1>GreenPaws Veterinary Clinic</h1>
+
+    <!-- Register Client -->
+    <h2>Register New Client</h2>
     <form id="clientForm">
-        <input type="text" id="name" placeholder="Name" required>
-        <input type="text" id="phone" placeholder="Phone" required>
-        <input type="text" id="cnic" placeholder="CNIC (optional)">
+        <label>
+            Name:
+            <input type="text" id="name" placeholder="Name" required>
+        </label><br><br>
+        <label>
+            Phone:
+            <input type="text" id="phone" placeholder="Phone" required>
+        </label><br><br>
+        <label>
+            CNIC:
+            <input type="text" id="cnic" placeholder="CNIC (optional)">
+        </label><br><br>
         <button type="submit">Add Client</button>
     </form>
 
-    <h2>Client List</h2>
+    <!-- Client List -->
+    <h3>Client List</h3>
     <ul id="clientList"></ul>
-    <h1>Register Pet</h1>
-<form id="petForm">
-    <input type="text" id="petName" placeholder="Pet Name" required>
-    <input type="text" id="species" placeholder="Species" required>
-    <input type="text" id="breed" placeholder="Breed">
-    <input type="date" id="dob" placeholder="Date of Birth">
-    <select id="ownerSelect" required></select>
-    <button type="submit">Add Pet</button>
+
+    <hr>
+
+    <!-- Register Pet -->
+    <h2>Register New Pet</h2>
+    <form id="petForm">
+        <label>
+            Pet Name:
+            <input type="text" id="petName" placeholder="Pet Name" required>
+        </label><br><br>
+        <label>
+            Species:
+            <input type="text" id="species" placeholder="Species" required>
+        </label><br><br>
+        <label>
+            Breed:
+            <input type="text" id="breed" placeholder="Breed">
+        </label><br><br>
+        <label>
+            Date of Birth:
+            <input type="date" id="dob">
+        </label><br><br>
+        <label>
+            Owner:
+            <select id="ownerSelect" required>
+                <option value="">-- Select Owner --</option>
+            </select>
+        </label><br><br>
+        <button type="submit">Add Pet</button>
+    </form>
+
+    <!-- Pet List -->
+    <h3>Pet List</h3>
+    <ul id="petList"></ul>
+    <hr>
+
+<h2>Add Visit Record</h2>
+<form id="visitForm">
+    <label>
+        Select Pet:
+        <select id="visitPetSelect" required>
+            <option value="">-- Select Pet --</option>
+        </select>
+    </label><br><br>
+
+    <label>
+        Date:
+        <input type="date" id="visitDate" required>
+    </label><br><br>
+
+    <label>
+        Symptoms:
+        <textarea id="symptoms" required></textarea>
+    </label><br><br>
+
+    <label>
+        Treatment:
+        <textarea id="treatment" required></textarea>
+    </label><br><br>
+
+    <label>
+        Next Visit Date:
+        <input type="date" id="nextVisit">
+    </label><br><br>
+
+    <button type="submit">Add Visit</button>
 </form>
 
-<h2>Pet List</h2>
-<ul id="petList"></ul>
+<h3>Visit Records</h3>
+<ul id="visitList"></ul>
 
 
+    <!-- Load JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
