@@ -5,44 +5,14 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Configure SQLite database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///clients.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
-# Client model
 class Client(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     phone = db.Column(db.String(20))
     cnic = db.Column(db.String(20))
-
-# Create tables
-with app.app_context():
-    db.create_all()
-
-# Routes
-@app.route('/')
-def home():
-    return "GreenPaws backend is running."
-
-@app.route('/api/clients', methods=['GET', 'POST'])
-def manage_clients():
-    if request.method == 'POST':
-        data = request.json
-        client = Client(name=data['name'], phone=data['phone'], cnic=data.get('cnic'))
-        db.session.add(client)
-        db.session.commit()
-        return jsonify({'message': 'Client added'}), 201
-
-    clients = Client.query.all()
-    return jsonify([{
-        'id': c.id, 'name': c.name, 'phone': c.phone, 'cnic': c.cnic
-    } for c in clients])
-
-if __name__ == '__main__':
-    app.run(debug=True)
 
 class Pet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -53,7 +23,42 @@ class Pet(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('client.id'), nullable=False)
 
     owner = db.relationship('Client', backref=db.backref('pets', lazy=True))
-    @app.route('/api/pets', methods=['POST', 'GET'])
+
+with app.app_context():
+    db.create_all()
+
+@app.route('/')
+def home():
+    return "GreenPaws backend is running."
+
+@app.route('/api/clients', methods=['GET', 'POST'])
+def manage_clients():
+    if request.method == 'POST':
+        data = request.json
+        client = Client(name=data['name'], phone=data['phone'], cnic=data.get('cnic', ''))
+        db.session.add(client)
+        db.session.commit()
+        return jsonify({'message': 'Client added'}), 201
+
+    clients = Client.query.all()
+    return jsonify([{
+        'id': c.id,
+        'name': c.name,
+        'phone': c.phone,
+        'cnic': c.cnic
+    } for c in clients])
+
+@app.route('/api/clients/<int:id>', methods=['PUT'])
+def update_client(id):
+    client = Client.query.get_or_404(id)
+    data = request.json
+    client.name = data['name']
+    client.phone = data['phone']
+    client.cnic = data.get('cnic', '')
+    db.session.commit()
+    return jsonify({'message': 'Client updated'})
+
+@app.route('/api/pets', methods=['POST', 'GET'])
 def manage_pets():
     if request.method == 'POST':
         data = request.json
@@ -81,3 +86,5 @@ def manage_pets():
         for p in pets
     ])
 
+if __name__ == '__main__':
+    app.run(debug=True)
