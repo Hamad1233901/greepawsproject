@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f9f9f9;
+}
+
+h1 {
+    color: #2d572c;
+    font-size: 28px;
+}
+
+h2, h3 {
+    color: #444;
+}
+
+form {
+    margin-bottom: 30px;
+}
+
+input, select, textarea {
+    padding: 6px;
+    margin-top: 4px;
+    width: 300px;
+}
+
+button {
+    padding: 6px 12px;
+    margin-top: 10px;
+    margin-right: 6px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
